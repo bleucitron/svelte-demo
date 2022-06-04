@@ -1,0 +1,29 @@
+.Pokemon {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 15rem;
+  margin: auto;
+}
+
+.favorite .name {
+  color: orange;
+}
+
+img {
+  height: 15rem;
+  object-fit: cover;
+}
+
+button {
+  position: absolute;
+  inset: 0 0 auto auto;
+  cursor: pointer;
+}
+
+.name,
+.id {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+}
