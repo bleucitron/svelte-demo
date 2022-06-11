@@ -26,68 +26,68 @@
   }
 </script>
 
-<main>
-  <header>
-    <h1 on:click={() => (current = null)}>Pokedex</h1>
-    <button class:active={showFavs} on:click={() => (showFavs = !showFavs)}>
-      Favorites ({$favorites.size})
-    </button>
-  </header>
-  <div class="content" class:centered={!!current}>
-    {#await promise}
-      <div class="loader">Loading...</div>
-    {:then}
-      {#if current != null}
-        <Slider items={toDisplay} {current} let:item>
-          <Pokemon infos={item} />
-          <img
-            src={previous.sprites.front_default}
-            alt="Previous pokemon"
-            slot="previous"
-            let:previous
-          />
-          <img
-            src={next.sprites.front_default}
-            alt="Next pokemon"
-            slot="next"
-            let:next
-          />
-        </Slider>
+<header>
+  <h1 on:click={() => (current = null)}>{current ? 'Retour' : 'Pokedex'}</h1>
+  <button class:active={showFavs} on:click={() => (showFavs = !showFavs)}>
+    Favorites ({$favorites.size})
+  </button>
+</header>
+<main class:centered={!!current}>
+  {#await promise}
+    <div class="loader">Loading...</div>
+  {:then}
+    {#if current != null}
+      <Slider items={toDisplay} {current} let:item>
+        <Pokemon infos={item} />
+        <img
+          src={previous.sprites.front_default}
+          alt="Previous pokemon"
+          slot="previous"
+          let:previous
+        />
+        <img
+          src={next.sprites.front_default}
+          alt="Next pokemon"
+          slot="next"
+          let:next
+        />
+      </Slider>
+    {:else}
+      {#each toDisplay as pokemon, i (pokemon.id)}
+        {@const {
+          id,
+          name,
+          sprites: { front_default: src },
+        } = pokemon}
+        {#key showFavs}
+          <div class="mini" in:fade={{ delay: showFavs ? 0 : 50 * i }}>
+            <img
+              {src}
+              class:favorite={$favorites.has(id)}
+              alt={name}
+              on:click={() => (current = i)}
+            />
+            <button on:click={() => favorites.toggle(id)}>Fav</button>
+          </div>
+        {/key}
       {:else}
-        {#each toDisplay as pokemon, i (pokemon.id)}
-          {@const {
-            id,
-            name,
-            sprites: { front_default: src },
-          } = pokemon}
-          {#key showFavs}
-            <div class="mini" in:fade={{ delay: showFavs ? 0 : 50 * i }}>
-              <img
-                {src}
-                class:favorite={$favorites.has(id)}
-                alt={name}
-                on:click={() => (current = i)}
-              />
-              <button on:click={() => favorites.toggle(id)}>Fav</button>
-            </div>
-          {/key}
-        {:else}
-          Pas de pokémons
-        {/each}
-      {/if}
-    {/await}
-  </div>
+        Pas de pokémons
+      {/each}
+    {/if}
+  {/await}
 </main>
 
 <style>
-  main,
-  .content {
+  main {
     display: flex;
+    overflow: auto;
+    flex: 1;
+    flex-wrap: wrap;
+    align-content: flex-start;
   }
 
-  main {
-    flex-flow: column;
-    height: 100vh;
+  main.centered {
+    align-content: center;
   }
 
   header {
@@ -112,16 +112,6 @@
     height: 100%;
   }
 
-  .content {
-    flex: 1;
-    flex-wrap: wrap;
-    align-content: flex-start;
-  }
-
-  .content.centered {
-    align-content: center;
-  }
-
   .mini {
     position: relative;
   }
@@ -131,7 +121,7 @@
     cursor: pointer;
   }
 
-  img {
+  .mini img {
     width: 10rem;
     height: 10rem;
     object-fit: cover;
