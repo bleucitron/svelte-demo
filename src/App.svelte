@@ -24,19 +24,22 @@
   $: if (showFavs && $favorites.size === 0) {
     current = null;
   }
+  $: hasCurrent = current != null;
 </script>
 
 <header>
-  <h1 on:click={() => (current = null)}>{current ? 'Retour' : 'Pokedex'}</h1>
+  <h1 on:click={() => (current = null)}>
+    {hasCurrent ? 'Retour' : 'Pokedex'}
+  </h1>
   <button class:active={showFavs} on:click={() => (showFavs = !showFavs)}>
     Favorites ({$favorites.size})
   </button>
 </header>
-<main class:centered={!!current}>
+<main class:centered={hasCurrent}>
   {#await promise}
     <div class="loader">Loading...</div>
   {:then}
-    {#if current != null}
+    {#if hasCurrent}
       <Slider items={toDisplay} {current} let:item>
         <Pokemon infos={item} />
         <img
