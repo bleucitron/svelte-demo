@@ -1,5 +1,4 @@
 <script>
-  import { afterUpdate, beforeUpdate } from 'svelte';
   import { blur } from 'svelte/transition';
   import { tweened } from 'svelte/motion';
   import { expoOut } from 'svelte/easing';
