@@ -37,7 +37,7 @@
 </header>
 <main class:centered={hasCurrent}>
   {#await promise}
-    <div class="loader">Loading...</div>
+    Loading...
   {:then}
     {#if hasCurrent}
       <Slider items={toDisplay} {current} let:item>
@@ -56,26 +56,27 @@
         />
       </Slider>
     {:else}
-      {#each toDisplay as pokemon, i (pokemon.id)}
-        {@const {
-          id,
-          name,
-          sprites: { front_default: src },
-        } = pokemon}
-        {#key showFavs}
-          <div class="mini" in:fade={{ delay: showFavs ? 0 : 50 * i }}>
-            <img
-              {src}
+      <ul class:empty={!toDisplay.length}>
+        {#each toDisplay as pokemon, i (pokemon.id)}
+          {@const {
+            id,
+            name,
+            sprites: { front_default: src },
+          } = pokemon}
+          {#key showFavs}
+            <li
+              class="mini"
               class:favorite={$favorites.has(id)}
-              alt={name}
-              on:click={() => (current = i)}
-            />
-            <button on:click={() => favorites.toggle(id)}>Fav</button>
-          </div>
-        {/key}
-      {:else}
-        Pas de pokémons
-      {/each}
+              in:fade={{ delay: showFavs ? 0 : 50 * i }}
+            >
+              <img {src} alt={name} on:click={() => (current = i)} />
+              <button on:click={() => favorites.toggle(id)}>Fav</button>
+            </li>
+          {/key}
+        {:else}
+          Pas de pokémons
+        {/each}
+      </ul>
     {/if}
   {/await}
 </main>
@@ -86,10 +87,20 @@
     overflow: auto;
     flex: 1;
     flex-wrap: wrap;
-    align-content: flex-start;
+    align-content: center;
+    justify-content: center;
   }
 
-  main.centered {
+  ul {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+  }
+  ul.empty {
     align-content: center;
   }
 
@@ -100,23 +111,18 @@
   }
 
   .active {
-    background: orange;
+    border-color: orange;
   }
 
   h1 {
     cursor: pointer;
   }
 
-  .loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-
   .mini {
     position: relative;
+    margin: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
   }
   .mini button {
     position: absolute;
@@ -124,20 +130,31 @@
     cursor: pointer;
   }
 
+  .mini.favorite {
+    background: orange;
+  }
+
   .mini img {
     width: 10rem;
     height: 10rem;
     object-fit: cover;
     object-position: 0 0;
-    margin: 1rem;
-    border-radius: 50%;
-    cursor: pointer;
     border: 2px solid transparent;
   }
-  img.favorite {
-    background: orange;
-  }
-  img:hover {
+  .mini:hover {
     box-shadow: 0px 0px 10px -5px #000000;
+  }
+
+  :global(main .Slider button img) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 50%;
+    padding: 1rem;
+    filter: contrast(0%) brightness(200%);
+    transition: filter 0.1s ease-in-out;
+  }
+  :global(.Slider button img:hover) {
+    filter: contrast(100%) brightness(100%) opacity(60%);
   }
 </style>

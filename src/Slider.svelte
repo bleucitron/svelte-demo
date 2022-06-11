@@ -30,6 +30,7 @@
   $: length = items.length;
   $: previous = (current - 1 + length) % length;
   $: current = current % length;
+  $: current = Number.isNaN(current) ? 0 : current;
   $: next = (current + 1) % length;
   $: currentItem = items.at(current);
   $: offset = factor * (current - $position);
@@ -65,9 +66,10 @@
 <style>
   .Slider {
     display: flex;
-    height: 30rem;
+    height: 20rem;
     margin: auto;
     overflow: hidden;
+    align-items: center;
   }
 
   .content {

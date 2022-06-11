@@ -28,8 +28,10 @@
     margin: auto;
   }
 
-  .favorite .name {
-    color: orange;
+  .favorite button {
+    background: orange;
+    color: white;
+    border-color: orange;
   }
 
   img {
