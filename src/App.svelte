@@ -14,8 +14,7 @@
   let showFavs = false;
 
   onMount(() => {
-    promise = fetchPokemons();
-    promise.then(p => (pokemons = p));
+    promise = fetchPokemons().then(p => (pokemons = p));
   });
 
   $: toDisplay = showFavs
