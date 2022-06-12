@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'PokemonGb';
+  src: url('/fonts/PokemonGb-RAeo.ttf');
+}
+
 html, body {
   position: relative;
   width: 100%;
@@ -6,6 +11,7 @@ html, body {
 
 * {
   box-sizing: border-box;
+  font-family: 'PokemonGb';
 }
 
 body {
@@ -54,8 +60,11 @@ input:disabled {
 
 button {
   color: #333;
-  background-color: #f4f4f4;
   outline: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
 }
 
 button:disabled {
@@ -63,16 +72,16 @@ button:disabled {
 }
 
 button:not(:disabled):active {
-  background-color: #ddd;
+  background-color: #999;
 }
 
-button:focus {
-  border-color: #666;
+button:focus, button:hover {
+  background-color: #777;
+  color: white;
 }
 
 #app {
   display: flex;
   height: 100vh;
-  padding: 8px;
   flex-flow: column;
 }

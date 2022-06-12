@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 
 const { subscribe, update } = writable(new Set());
 
-export const favorites = {
+export const bag = {
   subscribe,
   toggle: id =>
     update(list => {

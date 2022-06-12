@@ -99,7 +99,7 @@
   .button-container {
     display: flex;
     align-items: center;
-    background: white;
+    background: #bbb;
     height: 100%;
     z-index: 1;
   }
@@ -112,20 +112,12 @@
     padding: 0;
     cursor: pointer;
     z-index: 1;
-    border: none;
-    background: darkslategrey;
+    border: 4px solid transparent;
+    background: #777;
   }
 
-  :global(main .Slider button img) {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    border-radius: 50%;
-    padding: 1rem;
-    filter: contrast(0%) brightness(200%);
-    transition: filter 0.1s ease-in-out;
-  }
-  :global(.Slider button img:hover) {
-    filter: contrast(100%) brightness(100%) opacity(60%);
+  button:hover,
+  button:focus {
+    border-color: #333;
   }
 </style>

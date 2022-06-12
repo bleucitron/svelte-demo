@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
 
-  import { favorites } from './stores';
+  import { bag } from './stores';
   import fetchPokemons from './utils';
 
   import Slider from './Slider.svelte';
@@ -11,45 +11,53 @@
   let promise;
   let pokemons = [];
   let current;
-  let showFavs = false;
+  let showCaught = false;
 
   onMount(() => {
     promise = fetchPokemons().then(p => (pokemons = p));
   });
 
-  $: toDisplay = showFavs
-    ? pokemons?.filter(p => $favorites.has(p.id))
-    : pokemons;
+  $: toDisplay = showCaught ? pokemons?.filter(p => $bag.has(p.id)) : pokemons;
 
-  $: if (showFavs && $favorites.size === 0) {
+  $: if (showCaught && $bag.size === 0) {
     current = null;
   }
   $: hasCurrent = current != null;
 </script>
 
 <header>
-  <h1 on:click={() => (current = null)}>
+  <h1 class:back={hasCurrent} on:click={() => (current = null)}>
     {hasCurrent ? 'Retour' : 'Pokedex'}
   </h1>
-  <button class:active={showFavs} on:click={() => (showFavs = !showFavs)}>
-    Favorites ({$favorites.size})
-  </button>
+  {#await promise then}
+    <button class:active={!showCaught} on:click={() => (showCaught = false)}>
+      All
+    </button>
+    <button class:active={showCaught} on:click={() => (showCaught = true)}>
+      Caught
+    </button>
+    <div class="nb" on:click={() => (showCaught = !showCaught)}>
+      ({$bag.size} / {pokemons.length})
+    </div>
+  {/await}
 </header>
 <main class:centered={hasCurrent}>
   {#await promise}
-    Loading...
+    <p class="info">Loading...</p>
   {:then}
     {#if hasCurrent}
       <Slider items={toDisplay} {current} let:item>
         <Pokemon infos={item} />
         <img
           src={previous.sprites.front_default}
+          class:caught={$bag.has(previous.id)}
           alt="Previous pokemon"
           slot="previous"
           let:previous
         />
         <img
           src={next.sprites.front_default}
+          class:caught={$bag.has(next.id)}
           alt="Next pokemon"
           slot="next"
           let:next
@@ -63,18 +71,21 @@
             name,
             sprites: { front_default: src },
           } = pokemon}
-          {#key showFavs}
+          {@const caught = $bag.has(id)}
+          {#key showCaught}
             <li
               class="mini"
-              class:favorite={$favorites.has(id)}
-              in:fade={{ delay: showFavs ? 0 : 50 * i }}
+              class:caught
+              in:fade={{ delay: showCaught ? 0 : 50 * i }}
             >
               <img {src} alt={name} on:click={() => (current = i)} />
-              <button on:click={() => favorites.toggle(id)}>Fav</button>
+              <button on:click={() => bag.toggle(id)}>
+                {caught ? 'Release' : 'Catch'}
+              </button>
             </li>
           {/key}
         {:else}
-          Pas de pokémons
+          <p class="info">Pas de pokémons</p>
         {/each}
       </ul>
     {/if}
@@ -89,6 +100,7 @@
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
+    background: #bbb;
   }
 
   ul {
@@ -106,32 +118,64 @@
 
   header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    background: #333;
+    color: white;
+  }
+  header button {
+    color: white;
+    margin: 0;
   }
 
-  .active {
-    border-color: orange;
+  .info {
+    font-size: 1.5rem;
   }
 
   h1 {
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  h1.back {
     cursor: pointer;
+  }
+
+  h1.back:hover {
+    text-decoration: underline;
+  }
+
+  header button {
+    color: #555;
+    background: none;
+  }
+
+  header button.active {
+    cursor: initial;
+    color: white;
+  }
+
+  .nb {
+    margin-left: auto;
   }
 
   .mini {
     position: relative;
     margin: 1rem;
-    border-radius: 50%;
     cursor: pointer;
   }
   .mini button {
     position: absolute;
-    inset: 1rem 1rem auto auto;
-    cursor: pointer;
+    inset: 0 0 auto auto;
+    outline: none;
+    border: none;
   }
 
-  .mini.favorite {
-    background: orange;
+  .mini.caught img,
+  img.caught {
+    filter: none;
   }
 
   .mini img {
@@ -139,22 +183,24 @@
     height: 10rem;
     object-fit: cover;
     object-position: 0 0;
-    border: 2px solid transparent;
   }
-  .mini:hover {
-    box-shadow: 0px 0px 10px -5px #000000;
+  .mini:hover img {
+    filter: contrast(0%) brightness(200%) drop-shadow(5px 5px 0px #333);
+  }
+
+  .mini.caught:hover img {
+    filter: drop-shadow(5px 5px 0px #333);
+  }
+
+  .mini img {
+    filter: contrast(0%) brightness(200%);
   }
 
   :global(main .Slider button img) {
     width: 100%;
     height: 100%;
     margin: 0;
-    border-radius: 50%;
     padding: 1rem;
     filter: contrast(0%) brightness(200%);
-    transition: filter 0.1s ease-in-out;
-  }
-  :global(.Slider button img:hover) {
-    filter: contrast(100%) brightness(100%) opacity(60%);
   }
 </style>
