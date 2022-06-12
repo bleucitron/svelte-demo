@@ -152,6 +152,10 @@
     background: none;
   }
 
+  header button:not(.active):hover {
+    background-color: #bbb;
+  }
+
   header button.active {
     cursor: initial;
     color: white;
