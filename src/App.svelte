@@ -36,7 +36,7 @@
     <button class:active={showCaught} on:click={() => (showCaught = true)}>
       Caught
     </button>
-    <div class="nb" on:click={() => (showCaught = !showCaught)}>
+    <div class="nb">
       ({$bag.size} / {pokemons.length})
     </div>
   {/await}
