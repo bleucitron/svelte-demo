@@ -1,23 +1,7 @@
-<script>
-  import { bag } from './stores';
-
-  export let infos;
-
-  $: ({
-    id,
-    name,
-    sprites: { front_default: src },
-  } = infos);
-  $: caught = $bag.has(id);
-</script>
-
-<div class="Pokemon" class:caught>
-  <div class="id">#{id}</div>
-  <img {src} alt={name} />
-  <div class="name">{name}</div>
-  <button on:click={() => bag.toggle(id)}>
-    {caught ? 'Release' : 'Catch'}
-  </button>
+<div class="Pokemon">
+  <div class="id"># 1</div>
+  <img src="" alt="Bulbi" />
+  <div class="name">Bulbi</div>
 </div>
 
 <style>

@@ -1,0 +1,129 @@
+<header>
+  <h1>Pokedex</h1>
+  <div class="nb">(0 / 151)</div>
+</header>
+<main>
+  <div class="Pokemon caught">
+    <div class="id"># 1</div>
+    <img
+      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png"
+      alt="Bulbi"
+    />
+    <div class="name">Bulbi</div>
+  </div>
+</main>
+
+<style>
+  main {
+    display: flex;
+    overflow: auto;
+    flex: 1;
+    flex-wrap: wrap;
+    /* align-content: center;
+    justify-content: center; */
+    background: #bbb;
+  }
+
+  ul {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+  }
+  ul.empty {
+    align-content: center;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    background: #333;
+    color: white;
+  }
+  header button {
+    color: white;
+    margin: 0;
+  }
+
+  .info {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  h1.back {
+    cursor: pointer;
+  }
+
+  h1.back:hover {
+    text-decoration: underline;
+  }
+
+  header button {
+    color: #555;
+    background: none;
+  }
+
+  header button:not(.active):hover {
+    background-color: #bbb;
+  }
+
+  header button.active {
+    cursor: initial;
+    color: white;
+  }
+
+  .nb {
+    margin-left: auto;
+  }
+
+  .mini {
+    position: relative;
+    margin: 1rem;
+    cursor: pointer;
+  }
+  .mini button {
+    position: absolute;
+    inset: 0 0 auto auto;
+    outline: none;
+    border: none;
+  }
+  .mini img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    object-position: 0 0;
+  }
+  .mini:hover img {
+    filter: contrast(0%) brightness(200%) drop-shadow(5px 5px 0px #333);
+  }
+
+  .mini.caught img {
+    filter: drop-shadow(5px 5px 0px #333);
+  }
+
+  .mini img {
+    filter: contrast(0%) brightness(200%);
+  }
+
+  :global(.mini.caught img, img.caught) {
+    filter: none;
+  }
+
+  :global(main .Slider button img) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 1rem;
+    filter: contrast(0%) brightness(200%);
+  }
+</style>

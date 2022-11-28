@@ -1,0 +1,33 @@
+<li class="mini">
+  <img src="" alt="Pikachu" />
+</li>
+
+<style>
+  .mini {
+    position: relative;
+    margin: 1rem;
+    cursor: pointer;
+  }
+  .mini button {
+    position: absolute;
+    inset: 0 0 auto auto;
+    outline: none;
+    border: none;
+  }
+  .mini img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    object-position: 0 0;
+  }
+  .mini img {
+    filter: contrast(0%) brightness(200%);
+  }
+  .mini:hover img {
+    filter: contrast(0%) brightness(200%) drop-shadow(5px 5px 0px #333);
+  }
+
+  .mini.caught img {
+    filter: drop-shadow(5px 5px 0px #333);
+  }
+</style>
