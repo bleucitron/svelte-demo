@@ -9,12 +9,13 @@
     sprites: { front_default: src },
   } = infos);
   $: caught = $bag.has(id);
+  $: displayedName = caught ? name : name.replace(/./g, '?');
 </script>
 
 <div class="Pokemon" class:caught>
   <div class="id">#{id}</div>
   <img {src} alt={name} />
-  <div class="name">{name}</div>
+  <div class="name">{displayedName}</div>
   <button on:click={() => bag.toggle(id)}>
     {caught ? 'Release' : 'Catch'}
   </button>
