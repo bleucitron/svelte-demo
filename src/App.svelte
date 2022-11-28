@@ -26,7 +26,7 @@
 </script>
 
 <header>
-  <h1 class:back={hasCurrent} on:click={() => (current = null)}>
+  <h1 class:back={hasCurrent} on:click={() => (current = null)} on:keyup>
     {hasCurrent ? 'Retour' : 'Pokedex'}
   </h1>
   {#await promise then}
@@ -76,9 +76,9 @@
             <li
               class="mini"
               class:caught
-              in:fade={{ delay: showCaught ? 0 : 50 * i }}
+              in:fade={{ delay: showCaught ? 0 : 20 * i }}
             >
-              <img {src} alt={name} on:click={() => (current = i)} />
+              <img {src} alt={name} on:click={() => (current = i)} on:keyup />
               <button on:click={() => bag.toggle(id)}>
                 {caught ? 'Release' : 'Catch'}
               </button>
